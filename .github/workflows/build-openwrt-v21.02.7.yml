@@ -1,4 +1,4 @@
-name: Build OpenWrt v21.02.7
+name: Build OpenWrt v21.02.7 ZTE E8820V2
 
 on:
   workflow_dispatch:
@@ -92,22 +92,9 @@ jobs:
         ccache -M 2G || true
         time make -j"$JOBS" world || make -j1 V=s world
         echo "✓ Build finished"
-        echo "=== CCACHE STATISTICS ==="
-        ccache -s
 
-    - name: Upload firmware artifacts
+    - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: openwrt-firmware
-        path: openwrt/bin/targets/**/**
-
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: v21.02.7-${{ github.run_number }}
-        name: OpenWrt ZTE E8820v2 Build ${{ github.run_number }}
-        draft: false
-        prerelease: false
-        files: openwrt/bin/targets/**/**/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: OpenWrt_21.02.7_ZTE_E8820V2_${{ env.BUILD_DATE }}
+        path: openwrt/bin
